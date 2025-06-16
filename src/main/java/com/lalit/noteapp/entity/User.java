@@ -28,11 +28,10 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles",joinColumns = @JoinColumn(name="user_id"))
+    @Column(name="role")
+    private Set<String >roles   = new HashSet<>();
 
     @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL , orphanRemoval = true)
     private Set<Note> notes = new HashSet<>();
